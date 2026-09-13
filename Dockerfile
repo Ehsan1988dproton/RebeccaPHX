@@ -6,11 +6,10 @@ RUN npm ci
 COPY dashboard/ ./
 RUN VITE_BASE_API=/api/ npm run build -- --outDir=build --assetsDir=statics
 
-# --- مرحله ۲: بیلد بک‌اند (Go) ---
-FROM golang:1.22-alpine AS backend-builder
+# --- مرحله ۲: بیلد بک‌اند (Go) - ارتقا به نسخه 1.25 ---
+FROM golang:1.25-alpine AS backend-builder
 WORKDIR /app
 COPY . .
-# اصلاح مسیر کپی فایل‌های بیلد شده دشبورد به پوشه صحیح
 COPY --from=frontend-builder /app/dashboard/build /app/dashboard/build
 
 RUN apk add --no-cache bash
