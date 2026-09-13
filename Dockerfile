@@ -6,7 +6,7 @@ RUN npm ci
 COPY dashboard/ ./
 RUN VITE_BASE_API=/api/ npm run build -- --outDir=build --assetsDir=statics
 
-# --- مرحله ۲: بیلد بک‌اند (Go) - ارتقا به نسخه 1.25 ---
+# --- مرحله ۲: بیلد بک‌اند (Go) ---
 FROM golang:1.25-alpine AS backend-builder
 WORKDIR /app
 COPY . .
@@ -30,10 +30,9 @@ RUN mkdir -p /usr/local/share/xray && \
     mv /tmp/xray/*.dat /usr/local/share/xray/ && \
     rm -rf /tmp/xray.zip /tmp/xray
 
-# انتقال فایل‌های کامپایل شده سرور
+# انتقال فایل‌های کامپایل شده سرور (خط مربوط به env.example حذف شد)
 COPY --from=backend-builder /app/dist/rebecca-server /opt/rebecca/rebecca-server
 COPY --from=backend-builder /app/dist/rebecca-cli /opt/rebecca/rebecca-cli
-COPY --from=backend-builder /app/.env.example /opt/rebecca/.env.example
 
 # انتقال و تنظیم اسکریپت استارت‌آپ
 COPY entrypoint.sh /opt/rebecca/entrypoint.sh
