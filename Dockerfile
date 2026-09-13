@@ -10,7 +10,8 @@ RUN VITE_BASE_API=/api/ npm run build -- --outDir=build --assetsDir=statics
 FROM golang:1.22-alpine AS backend-builder
 WORKDIR /app
 COPY . .
-COPY --from=frontend-builder /app/dashboard/build /app/dashboard/dashboard/build
+# اصلاح مسیر کپی فایل‌های بیلد شده دشبورد به پوشه صحیح
+COPY --from=frontend-builder /app/dashboard/build /app/dashboard/build
 
 RUN apk add --no-cache bash
 RUN bash scripts/build_binary.sh
